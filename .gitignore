@@ -1,0 +1,14 @@
+# KEEP composer.lock FOR PERFORMANCE OPTIMIZATION IN CIRCLE CI
+
+.DS_Store
+.idea/
+vendor/
+.php_cs
+
+/.phpcs-cache
+/.php_cs.cache
+.phpunit.result.cache
+/phpunit.xml
+.phpunit
+
+
