@@ -1,6 +1,5 @@
 {
   "name": "barthy-koeln/cached-prezent-translation",
-  "version": "1.0.0",
   "description": "Provides a trait to be used with prezent/translatable-bundle",
   "license": "MIT",
   "authors": [
