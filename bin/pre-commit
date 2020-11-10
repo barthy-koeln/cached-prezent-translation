@@ -1,21 +1,16 @@
 #!/bin/bash
 
-echo -e "[EXECUTING PRE COMMIT HOOK]\n"
+echo -e "[EXECUTING PRE COMMIT HOOK]"
 
 DIRECTORIES="lib tests"
 
-echo -e "Removing VarDump uses\n"
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  # shellcheck disable=SC2086
-  find $DIRECTORIES -type f -name '*.php' -exec sed -i '' '/VarDumper/d' {} \;
-else
-  # shellcheck disable=SC2086
-  find $DIRECTORIES -type f -name '*.php' -exec sed -i '/VarDumper/d' {} \;
-fi
-
-echo -e "Fixing PHP Code Style\n"
+echo -e " * Removing VarDump uses"
 # shellcheck disable=SC2086
-vendor/bin/php-cs-fixer fix $DIRECTORIES --config=.php_cs
+find $DIRECTORIES -type f -name '*.php' -exec sed -i '/VarDumper/d' {} \;
 
-echo -e "Staging Changes\n"
+echo -e " * Fixing PHP Code Style"
+# shellcheck disable=SC2086
+vendor/bin/php-cs-fixer --quiet fix $DIRECTORIES --config=.php_cs
+
+echo -e " * Staging Changes\n"
 git update-index --again
