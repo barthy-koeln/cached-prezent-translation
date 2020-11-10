@@ -5,7 +5,7 @@
 
 This library provides a simple trait that can be used with the [`prezent/doctrine-translatable-bundle`](https://github.com/Prezent/doctrine-translatable-bundle).
 
-Disclaimer: This is mostly a copy-pasted thing from the [`prezent/doctrine-translatable` docs about proxy getters and setters](https://github.com/Prezent/doctrine-translatable/blob/master/doc/getting-started.md#proxy-getters-and-setters), adapted for >= php7.4 an opinionated code styles.
+This is mostly a copy-pasted php trait from the [`prezent/doctrine-translatable` docs about proxy getters and setters](https://github.com/Prezent/doctrine-translatable/blob/master/doc/getting-started.md#proxy-getters-and-setters), adapted for php&nbsp;>=&nbsp;7.4 and opinionated code styles.
 
 The trait stores the current locale, fallback locale, and caches the last fetched translation.
 
@@ -15,6 +15,12 @@ the cached translation does not trigger any additional straight SELECT statement
 
 In a situation where more than one translation is needed (i.e. multiple translations must be loaded for the application,
 it is best to either manually fully initialise the collection or to handle caching yourself.
+
+## Installation
+
+```shell script
+composer require barthy-koeln/cached-prezent-translation
+```
 
 ## Usage
 
