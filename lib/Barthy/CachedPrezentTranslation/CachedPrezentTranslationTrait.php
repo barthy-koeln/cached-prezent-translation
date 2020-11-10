@@ -1,6 +1,6 @@
 <?php
 
-namespace Barthy\CachedPrezentTranslation;
+namespace BarthyKoeln\CachedPrezentTranslation;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Prezent\Doctrine\Translatable\Annotation as Prezent;
@@ -8,37 +8,26 @@ use Prezent\Doctrine\Translatable\Entity\AbstractTranslation;
 use RuntimeException;
 
 /**
- * Trait CachedPrezentTranslationTrait.
- *
  * @author  barthy <post@barthy.koeln>
  * @license MIT
  */
 trait CachedPrezentTranslationTrait
 {
     /**
-     * @var string
      * @Prezent\CurrentLocale
      */
-    protected $currentLocale;
+    protected ?string $currentLocale = null;
 
     /**
-     * @var string
      * @Prezent\FallbackLocale
      */
-    protected $fallbackLocale;
+    protected ?string $fallbackLocale = null;
 
     /**
-     * @var AbstractTranslation
-     *
-     * Cache current translation. Useful in Doctrine 2.4+
+     * Cache current translation. Useful in Doctrine 2.4+.
      */
-    protected $currentTranslation;
+    protected ?AbstractTranslation $cachedTranslation = null;
 
-    /**
-     * Translation helper method.
-     *
-     * @return AbstractTranslation|null
-     */
     public function translate(string $locale = null): AbstractTranslation
     {
         if (null === $locale) {
@@ -49,9 +38,9 @@ trait CachedPrezentTranslationTrait
             throw new RuntimeException('No locale has been set and currentLocale is empty');
         }
 
-        $currentTranslation = $this->getCurrentTranslation();
-        if ($currentTranslation && $currentTranslation->getLocale() === $locale) {
-            return $this->getCurrentTranslation();
+        $currentTranslation = $this->getCachedTranslation();
+        if (null !== $currentTranslation && $currentTranslation->getLocale() === $locale) {
+            return $this->getCachedTranslation();
         }
 
         /**
@@ -60,39 +49,34 @@ trait CachedPrezentTranslationTrait
         $translations = $this->getTranslations();
 
         $translation = $translations->get($locale);
-        if (empty($translation)) {
+        if (null === $translation) {
             $translation = $translations->get($this->getFallbackLocale());
-            if (empty($translation)) {
+
+            if (null === $translation) {
                 throw new RuntimeException('No translation in current or fallback locale');
             }
         }
 
-        $this->setCurrentTranslation($translation);
+        $this->setCachedTranslation($translation);
 
         return $translation;
     }
 
-    /**
-     * @return string
-     */
     protected function getCurrentLocale(): ?string
     {
         return $this->currentLocale;
     }
 
-    protected function getCurrentTranslation(): ?AbstractTranslation
+    protected function getCachedTranslation(): ?AbstractTranslation
     {
-        return $this->currentTranslation;
+        return $this->cachedTranslation;
     }
 
-    protected function setCurrentTranslation(AbstractTranslation $currentTranslation): void
+    protected function setCachedTranslation(AbstractTranslation $cachedTranslation): void
     {
-        $this->currentTranslation = $currentTranslation;
+        $this->cachedTranslation = $cachedTranslation;
     }
 
-    /**
-     * @return string
-     */
     protected function getFallbackLocale(): ?string
     {
         return $this->fallbackLocale;
