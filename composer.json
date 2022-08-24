@@ -15,8 +15,8 @@
   "homepage": "https://github.com/BarthyB/cached-prezent-translation",
   "type": "library",
   "require": {
-    "php": "^7.4",
-    "prezent/doctrine-translatable-bundle": "^1.0"
+    "php": "^7.4|^8.1",
+    "prezent/doctrine-translatable-bundle": "^1.2"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^2.16",
